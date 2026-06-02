@@ -1,7 +1,7 @@
 # コンプライアンス研修 GitHub Pages版
 
 公開URL:
-https://honbukeiei-design.github.io/vr_compliance20260602/
+https://honbukeiei-design.github.io/compliance_training/
 
 GitHub Pages設定:
 Settings → Pages → main / docs
