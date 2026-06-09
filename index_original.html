@@ -2,27 +2,14 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>コンプライアンス研修</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
   <main id="app">
     <section id="stage" aria-label="研修シナリオ画面">
-      <div id="sceneArea">
-        <div id="locationBadge">開始前</div>
-        <div id="characters" aria-hidden="true">
-          <img id="charLeft" class="character pos-left" alt="" />
-          <img id="charCenter" class="character pos-center" alt="" />
-          <img id="charRight" class="character pos-right" alt="" />
-        </div>
-        <div id="messageBubble" aria-live="polite">
-          <img id="bubbleIcon" src="assets/ui/info.svg" alt="" />
-          <span>迷ったときほど、患者さん・職員・組織の信頼を守る行動を選びましょう。</span>
-        </div>
-        <div id="judgement" aria-hidden="true"></div>
-      </div>
-
+      <div id="locationBadge">開始前</div>
       <aside id="trainingPanel">
         <div class="panelTop">
           <span id="progressText">開始前</span>
@@ -39,6 +26,16 @@
         <div class="readingHead">読み物・解説</div>
         <div id="readingText">選択後に、その場面で考えるポイントを表示します。</div>
       </article>
+
+      <div id="messageBubble" aria-live="polite">
+        <img id="bubbleIcon" src="assets/ui/info.png" alt="" />
+        <span>迷ったときほど、患者・職員・組織の信頼を守る行動を選びましょう。</span>
+      </div>
+
+      <img id="charLeft" class="character pos-left" alt="登場人物 左" />
+      <img id="charCenter" class="character pos-center" alt="登場人物 中央" />
+      <img id="charRight" class="character pos-right" alt="登場人物 右" />
+      <div id="judgement" aria-hidden="true"></div>
     </section>
   </main>
   <script src="assets/main.js"></script>

@@ -1,253 +1,191 @@
-const BASE = "assets/";
-const state = { index: -1, locked: false };
+const C = 'assets/characters/';
+const B = 'assets/backgrounds/';
 
 const scenarios = [
   {
-    title: "1. 相手の受け止め方を考える",
-    location: "ナースステーション",
-    bg: "backgrounds/nurse_station.svg",
-    question: "夜勤明けの看護師が、申し送りの準備に時間をかけています。表情は硬く、何度もメモを見返しており、普段より明らかに余裕がありません。\n\nあなたは先輩職員として、どのように声をかけますか？",
-    message: "相手の状況や気持ちに寄り添うことが、信頼関係づくりの第一歩です。",
-    reading: "医療現場では、職員一人ひとりが多くの情報を扱い、限られた時間の中で判断を求められます。疲労や不安がある状態では、普段ならできる確認や報告が難しくなることもあります。\n\nそのような場面で必要なのは、単に注意することではなく、相手が安心して状況を説明できる環境をつくることです。職員同士が早めに相談できる職場は、ミスの予防や患者安全にもつながります。",
-    chars: ["characters/doctor_neutral.png","characters/nurse_worried.png","characters/office_neutral.png"],
-    focus: 1,
-    choices: [
-      ["「なんでこんなこともできないの？」と強く指摘する", "bad", "相手を責める表現は、萎縮や相談しづらさにつながります。本人に改善してほしい気持ちがあっても、人格を否定するような言い方は避けましょう。", ["characters/doctor_stern.png","characters/nurse_sad.png","characters/office_neutral.png"]],
-      ["「少し大変そうだけど、困っていることはない？」と状況を確認する", "good", "相手の状態を確認し、必要な支援につなげる姿勢が大切です。何ができていないかだけでなく、なぜ難しくなっているのかを一緒に確認しましょう。", ["characters/doctor_neutral.png","characters/nurse_happy.png","characters/office_neutral.png"]]
-    ]
+    location:'病棟スタッフステーション', bg:'hospital.svg', title:'第1問：SNSへの投稿',
+    question:'休憩中、同僚が「今日の病棟、すごく忙しかった」とSNSに投稿しようとしています。画面には患者さんの氏名は写っていませんが、ナースコール表示や病室番号が一部見えています。あなたならどう対応しますか。',
+    chars:{left:'nurse_neutral.png', center:'staff_worried.png', right:'security_neutral.png'},
+    choices:[
+      {text:'氏名が写っていなければ問題ないので、そのまま投稿してもらう。'},
+      {text:'個人が特定される可能性があるため投稿を控えるよう伝え、必要に応じて上司へ相談する。', correct:true, after:{center:'staff_happy.png'}},
+      {text:'投稿後に問題になったら削除すればよいと伝える。'}],
+    reading:'氏名がなくても、病室番号、日時、診療科、写真の背景、会話の内容などが組み合わさると、患者さんや職員が特定されることがあります。医療機関では「外部に出してよい情報か」ではなく、「外部に出したときに誰かの信頼や安全を損なわないか」で判断することが大切です。迷う場合は投稿しない、または上司や担当部署へ確認しましょう。'
   },
   {
-    title: "2. パワハラの境界線",
-    location: "会議室",
-    bg: "backgrounds/meeting_room.svg",
-    question: "上司が、部下のミスについて指導しようとしています。周囲には他の職員もおり、本人はすでに緊張した表情をしています。\n\nあなたが上司の立場なら、どのように指導しますか？",
-    message: "指導は人格ではなく、事実・原因・再発防止に向けます。",
-    reading: "パワーハラスメントは、単に怒鳴ることだけを指すものではありません。立場の優位性を背景に、相手の人格を傷つけたり、必要な範囲を超えて精神的苦痛を与えたりする行為は、職場環境を悪化させます。\n\n一方で、業務上必要な指導そのものが禁止されているわけではありません。大切なのは、指導の目的が業務改善にあること、言葉が人格否定になっていないこと、場所や方法に配慮されていることです。",
-    chars: ["characters/manager_stern.png","characters/staff_worried.png","characters/office_neutral.png"],
-    focus: 0,
-    choices: [
-      ["人前で「こんなミスをするなんて信じられない」と強く叱責する", "bad", "公開叱責は心理的安全性を下げ、パワハラリスクを高めます。本人だけでなく、周囲にも失敗を隠した方がよいという空気を生む恐れがあります。", ["characters/manager_angry.png","characters/staff_sad.png","characters/office_neutral.png"]],
-      ["別室で、事実・原因・再発防止策を落ち着いて確認する", "good", "場所・言葉・目的を整理した指導が望ましい対応です。ミスの原因を一緒に確認し、本人の成長と組織の安全につなげましょう。", ["characters/manager_stern.png","characters/staff_happy.png","characters/office_neutral.png"]]
-    ]
+    location:'診察室', bg:'hospital.svg', title:'第2問：説明と同意',
+    question:'患者さんが検査内容について不安そうにしています。医師は急いでおり、説明が短くなりそうです。あなたが補助に入っている場合、どの対応が望ましいでしょうか。',
+    chars:{left:'patient_worried.svg', center:'doctor_neutral.png', right:'nurse_worried.png'},
+    choices:[
+      {text:'患者さんが質問しなければ、理解しているものとして進める。'},
+      {text:'不安や疑問を確認し、説明が不足している点は医師に共有して、患者さんが納得できるよう支援する。', correct:true, after:{right:'nurse_happy.png'}},
+      {text:'詳しいことは専門職だけの責任なので、補助者は関わらない。'}],
+    reading:'インフォームド・コンセントでは、患者さんが内容を理解し、納得して選択できることが重要です。説明する職種が限られる内容であっても、患者さんの不安に気づき、適切な担当者につなぐことはチーム医療の大切な役割です。'
   },
   {
-    title: "3. 患者・来院者からの高圧的要求",
-    location: "外来受付",
-    bg: "backgrounds/reception.svg",
-    question: "来院者が受付で大声を出し、「今すぐ診ろ」「責任者を出せ」と強く要求しています。周囲の患者も不安そうに見ています。\n\nあなたはどのように対応しますか？",
-    message: "危険時は安全確保を優先し、複数人・組織対応につなげます。",
-    reading: "医療機関では、患者や家族が不安や焦りを抱えて来院することがあります。その気持ちに配慮することは大切ですが、暴言、脅迫、長時間の拘束、過度な要求などを無制限に受け入れる必要はありません。\n\n職員が安全に働ける環境を守ることは、安定した医療提供の前提です。対応に迷う場面では、個人で抱え込まず、上司や関係部署と連携することが重要です。",
-    chars: ["characters/visitor_angry.png","characters/nurse_worried.png","characters/security_neutral.png"],
-    focus: 0,
-    choices: [
-      ["「そんな言い方をされても困ります」と感情的に言い返す", "bad", "感情的な反論は事態を悪化させます。職員個人の判断だけで対応を続けると、安全上のリスクも高まります。", ["characters/visitor_angry.png","characters/nurse_sad.png","characters/security_neutral.png"]],
-      ["落ち着いて対応し、複数人対応・警告・記録・上司報告につなげる", "good", "説明、警告、対応の打ち切り、報告、記録といった手順を意識します。威圧的な言動が続く場合は組織として対応しましょう。", ["characters/visitor_neutral.png","characters/nurse_happy.png","characters/security_neutral.png"]]
-    ]
+    location:'廊下', bg:'corridor.svg', title:'第3問：個人情報の会話',
+    question:'廊下で職員同士が患者さんの病状について話しています。周囲には面会者や業者の姿もあります。あなたならどうしますか。',
+    chars:{left:'staff_worried.png', center:'nurse_neutral.png', right:'patient_neutral.svg'},
+    choices:[
+      {text:'業務上の会話なので、場所は気にしなくてよい。'},
+      {text:'周囲に聞こえる可能性を伝え、スタッフステーションや相談室など適切な場所で話すよう促す。', correct:true, after:{left:'staff_happy.png'}},
+      {text:'患者名を略せば、廊下で話しても問題ない。'}],
+    reading:'医療情報は非常に機微な情報です。名前を伏せても、病室、診療科、家族構成、会話の流れで特定されることがあります。会話の場所、声量、資料の扱いを意識するだけで、漏えいリスクは大きく下げられます。'
   },
   {
-    title: "4. 個人情報の取り扱い",
-    location: "カルテ管理室",
-    bg: "backgrounds/karte_room.svg",
-    question: "電子カルテの画面と、患者氏名が記載されたリストが机上にあります。あなたは急ぎの用件で、数分だけ席を離れる必要があります。\n\nどのように対応しますか？",
-    message: "電子情報と紙情報の両方を守ることが、医療倫理の基本です。",
-    reading: "医療機関では、病名、検査結果、家族構成、連絡先など、非常に機微な情報を扱います。これらの情報は、患者本人にとって重大なプライバシーに関わるものです。\n\n情報漏えいは、悪意ある行為だけでなく、画面の表示、書類の置き忘れ、会話の聞こえ漏れなど、日常の小さな不注意からも発生します。日々の基本動作を徹底することが、患者からの信頼を守る第一歩です。",
-    chars: ["characters/office_neutral.png","characters/nurse_neutral.png","characters/doctor_neutral.png"],
-    focus: 0,
-    choices: [
-      ["短時間なので、画面も紙資料もそのままにして離席する", "bad", "短時間でも漏えいリスクがあります。少しだけだから大丈夫という油断が、情報漏えいにつながることがあります。", ["characters/office_neutral.png","characters/nurse_sad.png","characters/doctor_stern.png"]],
-      ["画面をロックし、紙資料を伏せる、または所定の場所に保管する", "good", "画面ロックと紙資料管理をセットで行うのが適切です。見られない、持ち出されない、置き忘れない基本を徹底しましょう。", ["characters/office_neutral.png","characters/nurse_happy.png","characters/doctor_neutral.png"]]
-    ]
+    location:'事務室', bg:'office.svg', title:'第4問：USBメモリの使用',
+    question:'急ぎの資料作成のため、患者情報を私物USBメモリに保存して自宅で作業しようと考えています。最も適切な対応はどれでしょうか。',
+    chars:{left:'office_neutral.png', center:'staff_worried.png', right:'security_neutral.png'},
+    choices:[
+      {text:'短時間だけなら私物USBを使ってもよい。'},
+      {text:'私物媒体への保存は避け、院内ルールに沿った承認済みの方法で作業する。', correct:true, after:{center:'staff_happy.png'}},
+      {text:'ファイル名を分かりにくくすれば、私物USBでも安全である。'}],
+    reading:'私物媒体は紛失、盗難、ウイルス感染、誤保存のリスクが高く、情報漏えいにつながりやすいものです。便利さよりも、承認された環境・手順・アクセス権限を優先することが、患者さんと組織を守ります。'
   },
   {
-    title: "5. SNSへの投稿と職業倫理",
-    location: "休憩室",
-    bg: "backgrounds/break_room.svg",
-    question: "休憩中、同僚がスマートフォンで写真を撮りながら、「今日の外来、すごく混んでて大変だった。ちょっとSNSに書こうかな」と話しています。写真の端には、掲示物や職場の様子が少し写っています。\n\nあなたはどう声をかけますか？",
-    message: "SNSは、意図せず個人情報や職場情報を外部に出してしまう危険があります。",
-    reading: "SNSでは、投稿者が想定していない範囲まで情報が広がることがあります。一度拡散された情報を完全に削除することは困難です。\n\n特に医療機関では、患者の来院事実そのものが個人情報にあたる場合があります。写真に氏名が写っていなくても、背景、時間帯、診療内容、関係者のコメントなどから個人が推測される可能性があります。職員個人の投稿であっても、組織全体の信用に影響することを意識する必要があります。",
-    chars: ["characters/nurse_neutral.png","characters/staff_worried.png","characters/counselor_neutral.png"],
-    focus: 1,
-    choices: [
-      ["「名前が写っていなければ大丈夫じゃない？」と言う", "bad", "氏名が写っていなくても、日時、場所、診療科、状況などから個人や出来事が推測される場合があります。匿名なら大丈夫と安易に判断するのは危険です。", ["characters/nurse_sad.png","characters/staff_sad.png","characters/counselor_neutral.png"]],
-      ["「患者さんや院内情報が推測される可能性があるから、投稿は控えた方がいい」と伝える", "good", "SNS投稿は、情報の一部だけでも拡散されると取り返しがつきません。投稿前に、患者情報、職場情報、内部事情が含まれていないか確認しましょう。", ["characters/nurse_happy.png","characters/staff_happy.png","characters/counselor_neutral.png"]]
-    ]
+    location:'会議室', bg:'office.svg', title:'第5問：ハラスメントへの気づき',
+    question:'上司が部下に対して、他の職員の前で強い口調の注意を繰り返しています。部下は萎縮しており、業務にも影響が出ています。あなたならどう行動しますか。',
+    chars:{left:'manager_angry.png', center:'staff_sad.png', right:'counselor_neutral.png'},
+    choices:[
+      {text:'指導の一部なので、周囲は口を出さない。'},
+      {text:'安全を確保しつつ状況を記録し、相談窓口や上位者へつなぐ。必要に応じて当事者にも声をかける。', correct:true, after:{left:'manager_stern.png', center:'staff_worried.png'}},
+      {text:'その場を盛り上げる冗談として受け流す。'}],
+    reading:'ハラスメントは、受け手の心身だけでなく、職場全体の安全文化を損ないます。注意や指導が必要な場面でも、人格を傷つける言い方や公開の場での威圧は適切ではありません。見かけた人が一人で抱え込まず、記録し、相談につなぐことが重要です。'
   },
   {
-    title: "6. 職員間のうわさ話と守秘義務",
-    location: "廊下",
-    bg: "backgrounds/hallway.svg",
-    question: "廊下で同僚が、ある患者について「あの人、前にもトラブルがあったらしいよ」と話し始めました。周囲には他の患者や面会者が通っています。\n\nあなたはどう対応しますか？",
-    message: "守秘義務は、カルテや書類だけでなく、何気ない会話にも関わります。",
-    reading: "医療機関では、多職種が連携するために情報共有が不可欠です。しかし、すべての情報を誰とでも話してよいわけではありません。\n\n「業務に必要か」「その場で話すべきか」「聞こえる範囲に第三者がいないか」を意識する必要があります。患者に関する情報は、職員にとっては日常的な業務情報であっても、本人にとっては極めて私的な情報です。廊下、エレベーター、休憩室、食堂などでの会話には特に注意が必要です。",
-    chars: ["characters/staff_worried.png","characters/nurse_neutral.png","characters/visitor_neutral.png"],
-    focus: 0,
-    choices: [
-      ["興味本位で話を聞き続ける", "bad", "業務に必要のない情報を興味本位で共有することは、守秘義務の観点から問題があります。周囲に聞こえる場所での会話は特に注意が必要です。", ["characters/staff_sad.png","characters/nurse_sad.png","characters/visitor_angry.png"]],
-      ["「ここでは話さない方がいいですね。必要な情報なら所定の場で確認しましょう」と伝える", "good", "必要な情報共有とうわさ話は区別しましょう。業務上必要な場合は、適切な場所と方法で、必要最小限の範囲にとどめて共有します。", ["characters/staff_happy.png","characters/nurse_happy.png","characters/visitor_neutral.png"]]
-    ]
+    location:'受付・会計窓口', bg:'hospital.svg', title:'第6問：金品・便宜の受け取り',
+    question:'患者さんの家族から「いつもお世話になっているので」と商品券を渡されそうになりました。どう対応するのが適切でしょうか。',
+    chars:{left:'patient_neutral.svg', center:'staff_worried.png', right:'manager_stern.png'},
+    choices:[
+      {text:'気持ちなので、個人的に受け取ってお礼を言う。'},
+      {text:'お気持ちに感謝を伝えつつ、組織のルールとして受け取れないことを丁寧に説明する。', correct:true, after:{center:'staff_happy.png'}},
+      {text:'他の職員に見られない場所で受け取る。'}],
+    reading:'金品や過度な便宜の受け取りは、公平性への疑念や利益相反につながります。相手の気持ちを否定する必要はありません。感謝を伝えたうえで、組織のルールとして受け取れないことを丁寧に説明しましょう。'
   },
   {
-    title: "7. 物品・経費の適正使用",
-    location: "事務室",
-    bg: "backgrounds/office_room.svg",
-    question: "部署で使うために購入した備品が余っています。同僚が「少し余っているし、自宅で使ってもいいかな」と話しています。\n\nあなたはどう対応しますか？",
-    message: "少額であっても、公私混同は組織の信頼を損なう原因になります。",
-    reading: "コンプライアンスは、大きな不正だけを防ぐものではありません。日常の小さな判断の積み重ねが、組織の信頼を支えています。\n\n備品、消耗品、交通費、研修費、時間外勤務の申請などは、いずれも適正なルールに基づいて扱う必要があります。「誰も見ていない」「少額だから問題ない」という考え方は危険です。公的性格のある組織では、説明責任を果たせる行動が求められます。",
-    chars: ["characters/office_neutral.png","characters/staff_worried.png","characters/manager_stern.png"],
-    focus: 1,
-    choices: [
-      ["「少しぐらいなら問題ないと思う」と答える", "bad", "金額が小さくても、組織の物品を私的に利用することは不適切です。少しだけという感覚が、コンプライアンス違反の入口になることがあります。", ["characters/office_neutral.png","characters/staff_sad.png","characters/manager_angry.png"]],
-      ["「病院の経費で購入したものだから、私的に使うのは避けよう」と伝える", "good", "物品や経費は、目的に沿って適正に使用する必要があります。迷う場合は、自分たちで判断せず、上司や担当部署に確認しましょう。", ["characters/office_neutral.png","characters/staff_happy.png","characters/manager_stern.png"]]
-    ]
+    location:'電子カルテ端末', bg:'office.svg', title:'第7問：ID・パスワード管理',
+    question:'同僚から「急いでいるので、あなたのIDで電子カルテを開いておいて」と頼まれました。最も望ましい対応はどれですか。',
+    chars:{left:'nurse_worried.png', center:'security_neutral.png', right:'doctor_neutral.png'},
+    choices:[
+      {text:'信頼できる同僚なら、短時間だけIDを使わせる。'},
+      {text:'IDの共有はできないと伝え、本人が自分のIDでログインできるよう支援する。', correct:true, after:{left:'nurse_happy.png'}},
+      {text:'ログイン後にすぐ席を離れ、同僚に操作してもらう。'}],
+    reading:'IDは「誰が、いつ、何を見たか」を確認するための重要な鍵です。共有すると、誤操作や不正閲覧が起きたときに責任の所在が不明確になります。急ぎの場面ほど、基本ルールを崩さないことが大切です。'
   },
   {
-    title: "8. 利益相反と業者対応",
-    location: "面談室",
-    bg: "backgrounds/interview_room.svg",
-    question: "取引業者から、商品の説明後に「いつもお世話になっているので、個人的に使ってください」と商品券を渡されそうになりました。\n\nあなたはどう対応しますか？",
-    message: "業者との関係では、公平性と透明性が重要です。",
-    reading: "医療機関では、医薬品、医療機器、委託業務、備品購入など、多くの外部業者と関わります。その中で職員個人が金品や便宜を受けると、契約や選定の公正性に疑念が生じます。\n\nたとえ判断に影響していなくても、「影響したように見える」こと自体が組織の信用を損ないます。利益相反を避けるためには、個人的な関係で判断せず、ルールに基づいて対応することが重要です。",
-    chars: ["characters/vendor_neutral.svg","characters/doctor_neutral.png","characters/manager_stern.png"],
-    focus: 0,
-    choices: [
-      ["「少額だから問題ない」と受け取る", "bad", "少額であっても、個人的な利益供与を受けることは不適切と判断される可能性があります。本人にそのつもりがなくても、公平性を疑われることがあります。", ["characters/vendor_smile.svg","characters/doctor_stern.png","characters/manager_angry.png"]],
-      ["受け取りを断り、必要に応じて上司や担当部署に報告する", "good", "受け取らない、記録する、報告するという対応が基本です。業者との関係は、個人ではなく組織として透明性を持って管理しましょう。", ["characters/vendor_neutral.svg","characters/doctor_neutral.png","characters/manager_stern.png"]]
-    ]
+    location:'外部業者との打合せ', bg:'office.svg', title:'第8問：契約前の情報提供',
+    question:'システム業者から「概算見積のため、実データを少し見せてほしい」と言われました。患者情報を含む一覧を送ってよいでしょうか。',
+    chars:{left:'office_neutral.png', center:'security_neutral.png', right:'manager_stern.png'},
+    choices:[
+      {text:'見積に必要なら、メールで実データを送付する。'},
+      {text:'目的、契約、権限、匿名化の要否を確認し、承認された手順で必要最小限の情報だけを扱う。', correct:true},
+      {text:'口頭で「外部に漏らさないでください」と伝えれば十分である。'}],
+    reading:'外部提供では、目的の明確化、契約・守秘義務、取扱範囲、保存期間、廃棄方法などの確認が欠かせません。見積段階では、実データではなくダミーデータや匿名化データで代替できないかをまず検討しましょう。'
   },
   {
-    title: "9. インシデント報告と隠さない文化",
-    location: "病棟",
-    bg: "backgrounds/ward_room.svg",
-    question: "投薬準備の際、薬剤名を確認している途中で、別の患者の薬と取り違えそうになりました。実際には投与前に気づき、患者への影響はありませんでした。\n\nあなたはどうしますか？",
-    message: "患者に影響がなかった場合でも、ヒヤリ・ハットの共有は安全文化の重要な一部です。",
-    reading: "インシデントやヒヤリ・ハットの報告は、職員を罰するためのものではありません。むしろ、現場で起きている危険の芽を見つけ、重大事故を防ぐための重要な仕組みです。\n\n「今回は大丈夫だった」「自分の不注意だから言いにくい」と感じる場面ほど、報告が大切です。安全な組織とは、ミスをしない人だけで構成される組織ではなく、ミスや危険を早く共有し、改善できる組織です。",
-    chars: ["characters/nurse_worried.png","characters/doctor_neutral.png","characters/patient_neutral.svg"],
-    focus: 0,
-    choices: [
-      ["患者に影響がなかったので、報告せずに終わらせる", "bad", "影響がなかった事例でも、次回は重大事故につながる可能性があります。報告しないことで、組織として原因を把握し改善する機会を失います。", ["characters/nurse_sad.png","characters/doctor_stern.png","characters/patient_worried.svg"]],
-      ["上司に報告し、所定の手順でヒヤリ・ハットとして共有する", "good", "早期の報告と共有は、患者安全を守るために重要です。個人を責めるのではなく、仕組みや環境を改善する視点で対応します。", ["characters/nurse_happy.png","characters/doctor_neutral.png","characters/patient_neutral.svg"]]
-    ]
+    location:'夜間の病棟', bg:'corridor.svg', title:'第9問：ヒヤリ・ハット報告',
+    question:'薬剤の確認でヒヤリとする場面がありました。患者さんへの影響はありませんでしたが、当事者は「大ごとにしたくない」と言っています。あなたならどうしますか。',
+    chars:{left:'nurse_sad.png', center:'doctor_stern.png', right:'manager_stern.png'},
+    choices:[
+      {text:'患者さんに影響がなければ報告しない。'},
+      {text:'個人を責めるためではなく再発防止のために、ルールに沿って速やかに報告する。', correct:true, after:{left:'nurse_happy.png', center:'doctor_neutral.png'}},
+      {text:'当事者の希望を尊重し、口頭で周囲にだけ共有する。'}],
+    reading:'ヒヤリ・ハット報告は、誰かを罰するためではなく、同じ状況が重大事故につながらないよう仕組みを改善するためのものです。小さな気づきが、次の患者安全につながります。'
   },
   {
-    title: "10. 相談・通報しやすい職場づくり",
-    location: "相談室",
-    bg: "backgrounds/counseling_room.svg",
-    question: "同僚が「上司の言動がつらいけれど、相談したら自分が不利になるかもしれない」と話しています。\n\nあなたはどのように対応しますか？",
-    message: "問題は早い段階で相談されることが重要です。相談者を孤立させない姿勢も大切です。",
-    reading: "コンプライアンス違反やハラスメントの問題は、早期に相談されるほど対応の選択肢が広がります。しかし、相談する側は「不利益を受けるのではないか」「周囲に知られるのではないか」と不安を抱えています。\n\nそのため、職場には相談しやすい雰囲気と、相談者を守る仕組みが必要です。また、相談を受けた側も、安易に内容を広めたり、本人の了承なく話を進めたりしないよう注意が必要です。信頼できる窓口につなぐことが、適切な初期対応になります。",
-    chars: ["characters/staff_worried.png","characters/counselor_neutral.png","characters/manager_stern.png"],
-    focus: 0,
-    choices: [
-      ["「我慢するしかないよ。あまり大ごとにしない方がいい」と言う", "bad", "我慢を促す対応は、問題の長期化や深刻化につながる可能性があります。相談しようとする人を孤立させないことが大切です。", ["characters/staff_sad.png","characters/counselor_neutral.png","characters/manager_angry.png"]],
-      ["「一人で抱え込まないで、相談窓口や信頼できる上司に相談しよう」と伝える", "good", "相談先を示し、本人が安心して行動できるよう支えることが重要です。相談内容は慎重に扱い、本人の意思や安全に配慮してつなげましょう。", ["characters/staff_happy.png","characters/counselor_neutral.png","characters/manager_stern.png"]]
-    ]
+    location:'研修のまとめ', bg:'hospital.svg', title:'第10問：迷ったときの行動',
+    question:'日常業務で「この対応で本当に大丈夫かな」と迷う場面に出会いました。コンプライアンスの観点から、最も望ましい姿勢はどれでしょうか。',
+    chars:{left:'staff_worried.png', center:'nurse_neutral.png', right:'counselor_neutral.png'},
+    choices:[
+      {text:'前例がありそうなら、自分の判断だけで進める。'},
+      {text:'患者さん・職員・組織の信頼を守れるかを考え、迷ったら記録し、早めに相談する。', correct:true, after:{left:'staff_happy.png', center:'nurse_happy.png'}},
+      {text:'問題が起きてから対応を考える。'}],
+    reading:'コンプライアンスは、規程を暗記するだけのものではありません。迷ったときに立ち止まり、影響を想像し、相談できることが大切です。早めの相談は弱さではなく、患者さん・職員・組織を守るための専門的な行動です。'
   }
 ];
 
-const $ = id => document.getElementById(id);
-const ids = ["charLeft","charCenter","charRight"];
-const pos = ["pos-left","pos-center","pos-right"];
+let current = -1;
+let score = 0;
+const total = scenarios.length;
+const el = id => document.getElementById(id);
+const $ = {
+  stage: el('stage'), scene: el('sceneArea'), location: el('locationBadge'), progress: el('progressText'),
+  title: document.querySelector('#trainingPanel h1'), chapter: el('chapter'), question: el('question'), choices: el('choices'),
+  start: el('startBtn'), reading: el('readingText'), bubble: el('messageBubble').querySelector('span'), bubbleIcon: el('bubbleIcon'), judge: el('judgement'),
+  left: el('charLeft'), center: el('charCenter'), right: el('charRight')
+};
 
-function setCharacters(charList, focusIndex){
-  ids.forEach((id, idx) => {
-    const el = $(id);
-    el.src = BASE + charList[idx];
-    el.className = "character " + pos[idx];
-    if (idx === focusIndex) el.classList.add("focus","pulse","speaking");
-    else el.classList.add("dim");
+function pathFor(img){ return img ? C + img : ''; }
+function setChars(chars={}){
+  $.left.src = pathFor(chars.left); $.center.src = pathFor(chars.center); $.right.src = pathFor(chars.right);
+}
+function setSceneBg(file){ $.scene.style.setProperty('--scene-bg', `url('${B}${file}')`); }
+function showJudge(ok){
+  $.judge.className = ok ? 'show ok' : 'show ng';
+  $.judge.textContent = ok ? '○' : '×';
+  window.setTimeout(()=>{$.judge.className='';}, 900);
+}
+function loadScenario(i){
+  current = i;
+  const s = scenarios[i];
+  $.location.textContent = s.location;
+  $.progress.textContent = `${i+1} / ${total}`;
+  $.title.textContent = 'コンプライアンス研修';
+  $.chapter.textContent = s.title;
+  $.question.textContent = s.question;
+  $.reading.textContent = '選択後に解説を表示します。まずは自分ならどう対応するかを選んでください。';
+  $.bubble.textContent = '場面をよく読み、最も信頼を守れる対応を選びましょう。';
+  setSceneBg(s.bg);
+  setChars(s.chars);
+  $.choices.innerHTML = '';
+  s.choices.forEach((choice, idx)=>{
+    const btn = document.createElement('button');
+    btn.type='button'; btn.className='choiceBtn'; btn.textContent = `${idx+1}. ${choice.text}`;
+    btn.addEventListener('click',()=>answer(idx));
+    $.choices.appendChild(btn);
   });
+  $.start.textContent = '次へ';
+  $.start.style.display = 'none';
 }
-
-function startTraining(){
-  state.index = 0;
-  state.locked = false;
-  $("startBtn").style.display = "none";
-  loadScenario();
-}
-
-function loadScenario(){
-  if (state.index >= scenarios.length) {
-    showComplete();
-    return;
+function answer(idx){
+  const s = scenarios[current];
+  const choice = s.choices[idx];
+  const correct = !!choice.correct;
+  if(correct) score += 1;
+  [...document.querySelectorAll('.choiceBtn')].forEach((btn,i)=>{
+    btn.disabled = true;
+    if(s.choices[i].correct) btn.classList.add('correct');
+    if(i===idx && !correct) btn.classList.add('wrong');
+  });
+  const nextChars = Object.assign({}, s.chars, choice.after || {});
+  if(!correct){
+    if(nextChars.center && nextChars.center.includes('happy')) nextChars.center = s.chars.center;
   }
-
-  state.locked = false;
-  const s = scenarios[state.index];
-  $("stage").style.backgroundImage = `url('${BASE}${s.bg}')`;
-  $("locationBadge").textContent = s.location;
-  $("progressText").textContent = `${state.index + 1} / ${scenarios.length}`;
-  $("chapter").textContent = s.title;
-  $("question").textContent = s.question;
-  $("messageBubble").querySelector("span").textContent = s.message;
-  $("bubbleIcon").src = BASE + "ui/info.png";
-  $("readingText").textContent = "選択後に、この場面で考えるポイントを表示します。";
-  setCharacters(s.chars, s.focus);
-
-  const choices = $("choices");
-  choices.innerHTML = "";
-  s.choices.forEach((choice) => {
-    const b = document.createElement("button");
-    b.className = "choiceBtn";
-    b.innerHTML = `<span>${choice[0]}</span><strong>›</strong>`;
-    b.onclick = () => choose(choice, b);
-    choices.appendChild(b);
-  });
+  setChars(nextChars);
+  showJudge(correct);
+  $.reading.textContent = s.reading;
+  $.bubble.textContent = correct ? 'よい判断です。解説を読んで、判断の理由も確認しましょう。' : '惜しいです。赤い選択肢ではなく、緑の選択肢が望ましい対応です。理由を確認しましょう。';
+  $.start.style.display = 'inline-block';
+  $.start.textContent = current + 1 === total ? '結果を見る' : '次のシナリオへ';
 }
-
-function choose(choice, selectedButton){
-  if (state.locked) return;
-  state.locked = true;
-
-  document.querySelectorAll(".choiceBtn").forEach(b => b.disabled = true);
-  selectedButton.classList.add(choice[1] === "good" ? "goodSelected" : "badSelected");
-
-  const result = choice[1];
-  const feedback = choice[2];
-  const resultChars = choice[3];
-  const s = scenarios[state.index];
-
-  $("messageBubble").querySelector("span").textContent = feedback;
-  $("bubbleIcon").src = BASE + "ui/" + (result === "good" ? "good.png" : "bad.png");
-  $("readingText").textContent = s.reading;
-  setCharacters(resultChars, result === "good" ? 1 : s.focus);
-
-  const focused = $(ids[result === "good" ? 1 : s.focus]);
-  focused.classList.remove("reaction-good","reaction-bad");
-  focused.classList.add(result === "good" ? "reaction-good" : "reaction-bad");
-
-  $("judgement").textContent = result === "good" ? "〇" : "×";
-  $("judgement").style.background = result === "good" ? "rgba(0,150,90,.52)" : "rgba(170,0,0,.55)";
-  $("judgement").style.display = "flex";
-
-  setTimeout(() => { $("judgement").style.display = "none"; }, 1050);
-
-  const next = document.createElement("button");
-  next.id = "nextBtn";
-  next.type = "button";
-  next.textContent = state.index + 1 >= scenarios.length ? "研修を終了する" : "次のシナリオへ";
-  next.onclick = () => { state.index += 1; loadScenario(); };
-  $("choices").appendChild(next);
+function showResult(){
+  $.location.textContent = '修了';
+  $.progress.textContent = `${total} / ${total}`;
+  $.chapter.textContent = '研修結果';
+  $.question.innerHTML = `<div class="resultBox"><div class="resultScore">正答率：${score} / ${total}</div><div class="resultNote">お疲れさまでした。大切なのは満点を取ることだけではなく、迷ったときに立ち止まり、相談し、記録し、組織として安全な判断につなげることです。</div></div>`;
+  $.choices.innerHTML = '';
+  $.reading.textContent = '今回扱ったテーマは、個人情報保護、説明と同意、ハラスメント、利益相反、ID管理、外部提供、インシデント報告です。日々の小さな判断が、患者さんと職員からの信頼を支えます。';
+  $.bubble.textContent = `最終結果は ${score} / ${total} です。日常業務でも、迷ったら早めに相談しましょう。`;
+  setSceneBg('hospital.svg');
+  setChars({left:'staff_happy.png', center:'nurse_happy.png', right:'doctor_neutral.png'});
+  $.start.textContent = 'もう一度挑戦する';
+  $.start.style.display = 'inline-block';
+  current = -1;
 }
-
-function showComplete(){
-  $("stage").style.backgroundImage = `url('${BASE}backgrounds/counseling_room.svg')`;
-  $("locationBadge").textContent = "完了";
-  $("progressText").textContent = "完了";
-  $("chapter").textContent = "研修終了";
-  $("question").innerHTML = "全シナリオが終了しました。<br>日常業務の中で、法令遵守だけでなく、相手の受け止め方・心理的安全性・患者安全・組織への影響を意識して行動しましょう。";
-  $("choices").innerHTML = '<div class="completeBox">お疲れさまでした。もう一度実施する場合は、下のボタンを押してください。</div>';
-  $("startBtn").textContent = "もう一度実施する";
-  $("startBtn").style.display = "block";
-  $("messageBubble").querySelector("span").textContent = "コンプライアンスは、安心して働き、信頼される医療を提供するための行動基準です。";
-  $("bubbleIcon").src = BASE + "ui/good.png";
-  $("readingText").textContent = "この研修では、ハラスメント、カスタマーハラスメント、個人情報、SNS、守秘義務、経費、利益相反、インシデント報告、相談・通報を扱いました。どのテーマにも共通するのは、一人で抱え込まず、必要なときに記録し、相談し、組織として対応することです。";
-  setCharacters(["characters/doctor_neutral.png","characters/nurse_happy.png","characters/office_neutral.png"], 1);
-}
-
-function init(){
-  $("progressText").textContent = "開始前";
-  $("startBtn").addEventListener("click", startTraining);
-  setCharacters(["characters/doctor_neutral.png","characters/nurse_worried.png","characters/office_neutral.png"], 1);
-}
-
-window.addEventListener("DOMContentLoaded", init);
+$.start.addEventListener('click',()=>{
+  if(current === -1 && $.start.textContent.includes('もう一度')){score = 0; loadScenario(0); return;}
+  if(current === -1){score = 0; loadScenario(0); return;}
+  if(current + 1 < total){loadScenario(current+1);} else {showResult();}
+});
+setChars({left:'staff_happy.png', center:'nurse_neutral.png', right:'doctor_neutral.png'});
+setSceneBg('hospital.svg');
