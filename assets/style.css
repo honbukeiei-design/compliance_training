@@ -47,16 +47,40 @@ button{font:inherit}
   background-size:cover;
   opacity:.7;
 }
-#locationBadge{
-  position:absolute;top:16px;left:16px;z-index:5;
-  padding:.45rem .8rem;border-radius:999px;
-  color:#fff;background:rgba(24,71,107,.9);
-  font-weight:700;font-size:clamp(12px,1.2vw,15px);
+#sceneHeader{
+  position:absolute;
+  top:14px;
+  left:14px;
+  right:14px;
+  z-index:12;
+  display:flex;
+  align-items:flex-start;
+  gap:.6rem;
+  flex-wrap:wrap;
+}
+#locationBadge,#roleGuide{
+  border-radius:999px;
   box-shadow:0 8px 20px rgba(0,0,0,.14);
+  font-weight:800;
+  line-height:1.25;
+}
+#locationBadge{
+  padding:.45rem .8rem;
+  color:#fff;
+  background:rgba(24,71,107,.92);
+  font-size:clamp(12px,1.2vw,15px);
+}
+#roleGuide{
+  padding:.45rem .8rem;
+  color:#4f3300;
+  background:rgba(255,246,218,.96);
+  border:1px solid rgba(240,184,58,.95);
+  font-size:clamp(11px,1.05vw,14px);
+  max-width:min(100%,440px);
 }
 #characters{
   position:absolute;
-  inset:70px 22px 92px 22px;
+  inset:112px 22px 92px 22px;
   z-index:2;
 }
 .character{
@@ -71,37 +95,52 @@ button{font:inherit}
   transition:opacity .18s ease, transform .18s ease, filter .18s ease;
 }
 .character[src=""],.character:not([src]){opacity:0}
-.pos-left{left:3%;transform:translateX(0) scale(.96)}
-.pos-center{left:50%;transform:translateX(-50%) scale(1.08);z-index:3}
-.pos-right{right:3%;transform:translateX(0) scale(.96)}
-.character.is-support{opacity:.86}
-.character.is-actor{
+.pos-left{left:3%;--x:0}
+.pos-center{left:50%;--x:-50%}
+.pos-right{right:3%;--x:0}
+.character.pos-left,.character.pos-center,.character.pos-right{
+  transform:translateX(var(--x)) scale(var(--role-scale,.92));
+}
+.character.role-you{
+  --role-scale:1.16;
+  z-index:5;
   opacity:1;
   filter:
-    drop-shadow(0 18px 14px rgba(20,30,40,.16))
-    drop-shadow(0 0 14px rgba(255,196,72,.9));
-  animation:actor-breathe 1.6s ease-in-out infinite;
+    drop-shadow(0 20px 16px rgba(20,30,40,.18))
+    drop-shadow(0 0 16px rgba(255,196,72,.95));
+  animation:you-breathe 1.6s ease-in-out infinite;
 }
-@keyframes actor-breathe{
+.character.role-actor,
+.character.role-receiver{
+  --role-scale:.78;
+  z-index:3;
+  opacity:.84;
+}
+.character.role-support{
+  --role-scale:.82;
+  z-index:2;
+  opacity:.82;
+}
+@keyframes you-breathe{
   0%,100%{translate:0 0}
-  50%{translate:0 -4px}
+  50%{translate:0 -5px}
 }
-.actorCue{
+.roleCue{
   position:absolute;
-  top:-58px;
+  top:-60px;
   z-index:9;
   display:none;
   width:min(31%,270px);
-  padding:.45rem .6rem;
+  padding:.42rem .55rem;
   border-radius:14px;
   background:rgba(255,255,255,.97);
-  border:2px solid #f0b83a;
   box-shadow:0 10px 24px rgba(45,58,70,.18);
   text-align:center;
   pointer-events:none;
+  border:2px solid #b7c8d8;
 }
-.actorCue.show{display:block}
-.actorCue::after{
+.roleCue.show{display:block}
+.roleCue::after{
   content:"";
   position:absolute;
   left:50%;
@@ -110,26 +149,44 @@ button{font:inherit}
   width:0;height:0;
   border-left:10px solid transparent;
   border-right:10px solid transparent;
-  border-top:11px solid #f0b83a;
+  border-top:11px solid #b7c8d8;
 }
-.actorCueMain{
+.roleCueMain{
   display:block;
   font-weight:900;
-  color:#8a5a00;
   font-size:.82rem;
   line-height:1.1;
 }
-.actorCueSub{
+.roleCueSub{
   display:block;
   margin-top:.15rem;
   color:#263747;
   font-weight:800;
-  font-size:.72rem;
+  font-size:.7rem;
   line-height:1.25;
 }
-.actorCue.pos-left{left:3%;transform:translateX(0)}
-.actorCue.pos-center{left:50%;transform:translateX(-50%)}
-.actorCue.pos-right{right:3%;transform:translateX(0)}
+.roleCue.role-you{
+  border-color:#f0b83a;
+  background:rgba(255,250,232,.98);
+}
+.roleCue.role-you::after{border-top-color:#f0b83a}
+.roleCue.role-you .roleCueMain{color:#8a5a00}
+.roleCue.role-actor{
+  border-color:#d98989;
+  background:rgba(255,243,243,.97);
+}
+.roleCue.role-actor::after{border-top-color:#d98989}
+.roleCue.role-actor .roleCueMain{color:#963232}
+.roleCue.role-receiver{
+  border-color:#82a9cf;
+  background:rgba(240,247,255,.97);
+}
+.roleCue.role-receiver::after{border-top-color:#82a9cf}
+.roleCue.role-receiver .roleCueMain{color:#235582}
+.roleCue.role-support .roleCueMain{color:#476171}
+.roleCue.pos-left{left:3%;transform:translateX(0)}
+.roleCue.pos-center{left:50%;transform:translateX(-50%)}
+.roleCue.pos-right{right:3%;transform:translateX(0)}
 #messageBubble{
   position:absolute;left:18px;right:18px;bottom:18px;z-index:6;
   display:flex;gap:.7rem;align-items:center;
@@ -194,11 +251,15 @@ h1{margin:.15rem 0 .4rem;font-size:clamp(1.45rem,2.4vw,2.25rem);letter-spacing:.
   #sceneArea{grid-row:1;min-height:46dvh;max-height:48dvh}
   #trainingPanel{grid-column:1;grid-row:2;overflow:visible}
   #readingPanel{grid-column:1;grid-row:3;max-height:none}
-  #characters{inset:58px 14px 76px 14px}
+  #sceneHeader{top:10px;left:10px;right:10px}
+  #characters{inset:104px 14px 78px 14px}
   .character{width:min(32%,220px);height:min(94%,620px)}
-  .actorCue{top:-50px;width:min(32%,220px);padding:.35rem .45rem}
-  .actorCueMain{font-size:.74rem}
-  .actorCueSub{font-size:.64rem}
+  .character.role-you{--role-scale:1.1}
+  .character.role-actor,.character.role-receiver{--role-scale:.72}
+  .character.role-support{--role-scale:.76}
+  .roleCue{top:-56px;width:min(32%,220px);padding:.32rem .38rem}
+  .roleCueMain{font-size:.68rem}
+  .roleCueSub{font-size:.58rem}
 }
 @media (orientation:landscape) and (max-height:560px){
   #app{padding:6px}
@@ -212,16 +273,17 @@ h1{margin:.15rem 0 .4rem;font-size:clamp(1.45rem,2.4vw,2.25rem);letter-spacing:.
   #choices{gap:.45rem}
   .choiceBtn{padding:.48rem .7rem;font-size:.86rem;line-height:1.4}
   #startBtn{padding:.55rem .9rem;margin-top:.55rem}
-  #characters{inset:48px 10px 58px 10px}
+  #sceneHeader{top:8px;left:8px;right:8px;gap:.35rem}
+  #locationBadge,#roleGuide{font-size:.68rem;padding:.32rem .5rem}
+  #characters{inset:82px 10px 58px 10px}
   .character{width:30%;height:min(92%,430px)}
-  .actorCue{top:-42px;padding:.25rem .35rem;border-radius:10px}
-  .actorCueMain{font-size:.66rem}
-  .actorCueSub{font-size:.58rem}
+  .roleCue{top:-46px;padding:.22rem .28rem;border-radius:10px}
+  .roleCueMain{font-size:.58rem}
+  .roleCueSub{font-size:.5rem}
   #messageBubble{min-height:42px;padding:.45rem .65rem;font-size:.8rem;bottom:10px;left:10px;right:10px;border-radius:14px}
   #bubbleIcon{width:24px;height:24px}
-  #locationBadge{top:10px;left:10px;font-size:.78rem}
 }
 @media (min-width:1200px){
   .character{width:min(30%,290px)}
-  #characters{inset:82px 34px 100px 34px}
+  #characters{inset:124px 34px 100px 34px}
 }

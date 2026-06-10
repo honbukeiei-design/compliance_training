@@ -4,20 +4,28 @@ const B = 'assets/backgrounds/';
 const scenarios = [
   {
     location:'病棟スタッフステーション', bg:'hospital.svg', title:'第1問：SNSへの投稿',
-    actor:'left', actorLabel:'あなた：病棟看護師',
-    question:'あなたは病棟看護師です。休憩中、同僚が「今日の病棟、すごく忙しかった」とSNSに投稿しようとしています。画面には患者さんの氏名は写っていませんが、ナースコール表示や病室番号が一部見えています。あなたなら、同僚にどう声をかけますか。',
-    chars:{left:'nurse_neutral.png', center:'staff_worried.png', right:'counselor_neutral.png'},
+    question:'あなたは病棟看護師です。同僚が「今日の病棟、すごく忙しかった」とSNSに投稿しようとしています。画面には患者さんの氏名は写っていませんが、ナースコール表示や病室番号が一部見えています。あなたなら、同僚にどう声をかけますか。',
+    chars:{left:'nurse_neutral.png', center:'staff_worried.png', right:'security_neutral.png'},
+    roles:{
+      left:{type:'you', label:'あなた', sub:'病棟看護師'},
+      center:{type:'actor', label:'行為者', sub:'投稿しようとしている同僚'},
+      right:{type:'support', label:'相談先', sub:'情報管理・確認役'}
+    },
     choices:[
       {text:'氏名が写っていなければ問題ないので、そのまま投稿してもらう。'},
-      {text:'個人が特定される可能性があるため投稿を控えるよう伝え、必要に応じて上司へ相談する。', correct:true, after:{left:'nurse_happy.png', center:'staff_happy.png'}},
+      {text:'個人が特定される可能性があるため投稿を控えるよう伝え、必要に応じて上司や担当部署へ相談する。', correct:true, after:{left:'nurse_happy.png', center:'staff_happy.png'}},
       {text:'投稿後に問題になったら削除すればよいと伝える。'}],
     reading:'氏名がなくても、病室番号、日時、診療科、写真の背景、会話の内容などが組み合わさると、患者さんや職員が特定されることがあります。医療機関では「外部に出してよい情報か」ではなく、「外部に出したときに誰かの信頼や安全を損なわないか」で判断することが大切です。迷う場合は投稿しない、または上司や担当部署へ確認しましょう。'
   },
   {
     location:'診察室', bg:'hospital.svg', title:'第2問：説明と同意',
-    actor:'right', actorLabel:'あなた：補助に入る看護師',
     question:'あなたは診察室で補助に入っている看護師です。患者さんが検査内容について不安そうにしています。医師は急いでおり、説明が短くなりそうです。あなたなら、患者さんの不安にどう対応しますか。',
-    chars:{left:'patient_worried.png', center:'doctor_neutral.png', right:'nurse_worried.png'},
+    chars:{left:'doctor_neutral.png', center:'patient_worried.png', right:'nurse_worried.png'},
+    roles:{
+      left:{type:'actor', label:'説明者', sub:'医師'},
+      center:{type:'receiver', label:'受ける者', sub:'不安を抱える患者さん'},
+      right:{type:'you', label:'あなた', sub:'補助に入る看護師'}
+    },
     choices:[
       {text:'患者さんが質問しなければ、理解しているものとして進める。'},
       {text:'不安や疑問を確認し、説明が不足している点は医師に共有して、患者さんが納得できるよう支援する。', correct:true, after:{right:'nurse_happy.png'}},
@@ -26,9 +34,13 @@ const scenarios = [
   },
   {
     location:'廊下', bg:'corridor.svg', title:'第3問：個人情報の会話',
-    actor:'left', actorLabel:'あなた：通りかかった職員',
     question:'あなたは廊下を通りかかった職員です。近くで職員同士が患者さんの病状について話しています。周囲には面会者や患者さんの姿もあります。あなたなら、どのように対応しますか。',
     chars:{left:'staff_worried.png', center:'nurse_neutral.png', right:'patient_neutral.png'},
+    roles:{
+      left:{type:'you', label:'あなた', sub:'通りかかった職員'},
+      center:{type:'actor', label:'行為者', sub:'廊下で話す職員'},
+      right:{type:'receiver', label:'受ける者', sub:'聞こえる可能性がある患者さん'}
+    },
     choices:[
       {text:'業務上の会話なので、場所は気にしなくてよい。'},
       {text:'周囲に聞こえる可能性を伝え、スタッフステーションや相談室など適切な場所で話すよう促す。', correct:true, after:{left:'staff_happy.png'}},
@@ -37,9 +49,13 @@ const scenarios = [
   },
   {
     location:'事務室', bg:'office.svg', title:'第4問：USBメモリの使用',
-    actor:'center', actorLabel:'あなた：資料作成を担当する事務職員',
     question:'あなたは事務室で資料作成を担当している職員です。急ぎの資料作成のため、患者情報を私物USBメモリに保存して自宅で作業しようか迷っています。最も適切な対応はどれでしょうか。',
-    chars:{left:'manager_stern.png', center:'office_neutral.png', right:'counselor_neutral.png'},
+    chars:{left:'manager_stern.png', center:'office_neutral.png', right:'security_stern.png'},
+    roles:{
+      left:{type:'support', label:'管理者', sub:'承認・相談先'},
+      center:{type:'you', label:'あなた', sub:'資料作成を担当する事務職員'},
+      right:{type:'support', label:'情報管理', sub:'セキュリティ確認役'}
+    },
     choices:[
       {text:'短時間だけなら私物USBを使ってもよい。'},
       {text:'私物媒体への保存は避け、院内ルールに沿った承認済みの方法で作業する。', correct:true},
@@ -48,9 +64,13 @@ const scenarios = [
   },
   {
     location:'会議室', bg:'office.svg', title:'第5問：ハラスメントへの気づき',
-    actor:'right', actorLabel:'あなた：相談につなぐ立場の職員',
     question:'あなたは会議室で、上司が部下に対して他の職員の前で強い口調の注意を繰り返している場面を見ました。部下は萎縮しており、業務にも影響が出ています。あなたなら、どのように行動しますか。',
     chars:{left:'manager_angry.png', center:'staff_sad.png', right:'counselor_neutral.png'},
+    roles:{
+      left:{type:'actor', label:'行為者', sub:'強い注意をする上司'},
+      center:{type:'receiver', label:'受ける者', sub:'萎縮している職員'},
+      right:{type:'you', label:'あなた', sub:'相談につなぐ立場の職員'}
+    },
     choices:[
       {text:'指導の一部なので、周囲は口を出さない。'},
       {text:'安全を確保しつつ状況を記録し、相談窓口や上位者へつなぐ。必要に応じて当事者にも声をかける。', correct:true, after:{left:'manager_stern.png', center:'staff_worried.png'}},
@@ -59,9 +79,13 @@ const scenarios = [
   },
   {
     location:'受付・会計窓口', bg:'hospital.svg', title:'第6問：金品・便宜の受け取り',
-    actor:'center', actorLabel:'あなた：受付対応中の職員',
     question:'あなたは受付・会計窓口で対応している職員です。患者さんの家族から「いつもお世話になっているので」と商品券を渡されそうになりました。どう対応するのが適切でしょうか。',
     chars:{left:'patient_neutral.png', center:'staff_worried.png', right:'manager_stern.png'},
+    roles:{
+      left:{type:'actor', label:'行為者', sub:'商品券を渡そうとする家族'},
+      center:{type:'you', label:'あなた', sub:'受付対応中の職員'},
+      right:{type:'support', label:'管理者', sub:'相談・確認先'}
+    },
     choices:[
       {text:'気持ちなので、個人的に受け取ってお礼を言う。'},
       {text:'お気持ちに感謝を伝えつつ、組織のルールとして受け取れないことを丁寧に説明する。', correct:true, after:{center:'staff_happy.png'}},
@@ -70,9 +94,13 @@ const scenarios = [
   },
   {
     location:'電子カルテ端末', bg:'office.svg', title:'第7問：ID・パスワード管理',
-    actor:'left', actorLabel:'あなた：依頼を受けた看護師',
     question:'あなたは電子カルテ端末の前にいる看護師です。同僚から「急いでいるので、あなたのIDで電子カルテを開いておいて」と頼まれました。最も望ましい対応はどれですか。',
-    chars:{left:'nurse_worried.png', center:'doctor_neutral.png', right:'manager_stern.png'},
+    chars:{left:'nurse_worried.png', center:'doctor_neutral.png', right:'security_neutral.png'},
+    roles:{
+      left:{type:'you', label:'あなた', sub:'依頼を受けた看護師'},
+      center:{type:'actor', label:'行為者', sub:'ID共有を頼む同僚'},
+      right:{type:'support', label:'情報管理', sub:'ルール確認役'}
+    },
     choices:[
       {text:'信頼できる同僚なら、短時間だけIDを使わせる。'},
       {text:'IDの共有はできないと伝え、本人が自分のIDでログインできるよう支援する。', correct:true, after:{left:'nurse_happy.png'}},
@@ -81,9 +109,13 @@ const scenarios = [
   },
   {
     location:'外部業者との打合せ', bg:'office.svg', title:'第8問：契約前の情報提供',
-    actor:'left', actorLabel:'あなた：業者対応を担当する事務職員',
     question:'あなたは外部業者との打合せを担当している事務職員です。システム業者から「概算見積のため、実データを少し見せてほしい」と言われました。患者情報を含む一覧を送ってよいでしょうか。',
-    chars:{left:'office_neutral.png', center:'manager_stern.png', right:'counselor_neutral.png'},
+    chars:{left:'office_neutral.png', center:'manager_stern.png', right:'security_stern.png'},
+    roles:{
+      left:{type:'you', label:'あなた', sub:'業者対応を担当する事務職員'},
+      center:{type:'actor', label:'行為者', sub:'実データ提供を求める業者側'},
+      right:{type:'support', label:'情報管理', sub:'確認・承認先'}
+    },
     choices:[
       {text:'見積に必要なら、メールで実データを送付する。'},
       {text:'目的、契約、権限、匿名化の要否を確認し、承認された手順で必要最小限の情報だけを扱う。', correct:true},
@@ -92,20 +124,28 @@ const scenarios = [
   },
   {
     location:'夜間の病棟', bg:'corridor.svg', title:'第9問：ヒヤリ・ハット報告',
-    actor:'left', actorLabel:'あなた：ヒヤリとした看護師',
-    question:'あなたは夜間の病棟で薬剤確認を担当していた看護師です。確認の途中でヒヤリとする場面がありました。患者さんへの影響はありませんでしたが、当事者は「大ごとにしたくない」と言っています。あなたならどうしますか。',
-    chars:{left:'nurse_sad.png', center:'doctor_stern.png', right:'manager_stern.png'},
+    question:'あなたは夜間の病棟で薬剤確認を担当していた看護師です。確認の途中でヒヤリとする場面がありました。患者さんへの影響はありませんでしたが、同僚は「大ごとにしたくない」と言っています。あなたならどうしますか。',
+    chars:{left:'nurse_sad.png', center:'patient_neutral.png', right:'doctor_stern.png'},
+    roles:{
+      left:{type:'you', label:'あなた', sub:'ヒヤリとした看護師'},
+      center:{type:'receiver', label:'受ける者', sub:'安全を守る対象の患者さん'},
+      right:{type:'support', label:'医師・上位者', sub:'報告・相談先'}
+    },
     choices:[
       {text:'患者さんに影響がなければ報告しない。'},
-      {text:'個人を責めるためではなく再発防止のために、ルールに沿って速やかに報告する。', correct:true, after:{left:'nurse_happy.png', center:'doctor_neutral.png'}},
+      {text:'個人を責めるためではなく再発防止のために、ルールに沿って速やかに報告する。', correct:true, after:{left:'nurse_happy.png', right:'doctor_neutral.png'}},
       {text:'当事者の希望を尊重し、口頭で周囲にだけ共有する。'}],
     reading:'ヒヤリ・ハット報告は、誰かを罰するためではなく、同じ状況が重大事故につながらないよう仕組みを改善するためのものです。小さな気づきが、次の患者安全につながります。'
   },
   {
     location:'研修のまとめ', bg:'hospital.svg', title:'第10問：迷ったときの行動',
-    actor:'center', actorLabel:'あなた：日常業務で判断する職員',
     question:'あなたは日常業務の中で「この対応で本当に大丈夫かな」と迷う場面に出会いました。コンプライアンスの観点から、最も望ましい姿勢はどれでしょうか。',
     chars:{left:'staff_worried.png', center:'nurse_neutral.png', right:'counselor_neutral.png'},
+    roles:{
+      left:{type:'actor', label:'迷う場面', sub:'判断が必要な状況'},
+      center:{type:'you', label:'あなた', sub:'日常業務で判断する職員'},
+      right:{type:'support', label:'相談先', sub:'相談窓口・上位者'}
+    },
     choices:[
       {text:'前例がありそうなら、自分の判断だけで進める。'},
       {text:'患者さん・職員・組織の信頼を守れるかを考え、迷ったら記録し、早めに相談する。', correct:true, after:{left:'staff_happy.png', center:'nurse_happy.png'}},
@@ -120,8 +160,8 @@ const total = scenarios.length;
 const el = id => document.getElementById(id);
 const $ = {
   scene: el('sceneArea'),
-  characters: el('characters'),
   location: el('locationBadge'),
+  guide: el('roleGuide'),
   progress: el('progressText'),
   title: document.querySelector('#trainingPanel h1'),
   chapter: el('chapter'),
@@ -135,17 +175,14 @@ const $ = {
   center: el('charCenter'),
   right: el('charRight'),
   cues: {
-    left: el('actorCueLeft'),
-    center: el('actorCueCenter'),
-    right: el('actorCueRight')
+    left: el('roleCueLeft'),
+    center: el('roleCueCenter'),
+    right: el('roleCueRight')
   }
 };
 
 function pathFor(img){ return img ? C + img : ''; }
-
-function setSceneBg(file){
-  $.scene.style.setProperty('--scene-bg', `url('${B}${file}')`);
-}
+function setSceneBg(file){ $.scene.style.setProperty('--scene-bg', `url('${B}${file}')`); }
 
 function setChars(chars={}){
   $.left.src = pathFor(chars.left);
@@ -153,26 +190,33 @@ function setChars(chars={}){
   $.right.src = pathFor(chars.right);
 }
 
-function setActor(pos, label){
-  ['left','center','right'].forEach(p=>{
-    const isActor = p === pos;
-    const img = $[p];
-    const cue = $.cues[p];
-    img.classList.toggle('is-actor', isActor);
-    img.classList.toggle('is-support', !isActor);
-    if(cue){
-      cue.classList.toggle('show', isActor);
-      const sub = cue.querySelector('.actorCueSub');
-      if(sub) sub.textContent = isActor ? label : '';
+function setRoles(roles={}){
+  ['left','center','right'].forEach(pos=>{
+    const role = roles[pos] || {type:'support', label:'関係者', sub:''};
+    const img = $[pos];
+    const cue = $.cues[pos];
+
+    img.classList.remove('role-you','role-actor','role-receiver','role-support');
+    img.classList.add(`role-${role.type}`);
+
+    cue.classList.remove('role-you','role-actor','role-receiver','role-support','show');
+    cue.classList.add(`role-${role.type}`,'show');
+
+    cue.querySelector('.roleCueMain').textContent = role.label;
+    cue.querySelector('.roleCueSub').textContent = role.sub || '';
+
+    if(role.type === 'you'){
+      $.guide.textContent = `${role.label}：${role.sub}`;
     }
   });
 }
 
-function clearActor(){
-  ['left','center','right'].forEach(p=>{
-    $[p].classList.remove('is-actor','is-support');
-    if($.cues[p]) $.cues[p].classList.remove('show');
+function clearRoles(){
+  ['left','center','right'].forEach(pos=>{
+    $[pos].classList.remove('role-you','role-actor','role-receiver','role-support');
+    $.cues[pos].classList.remove('show','role-you','role-actor','role-receiver','role-support');
   });
+  $.guide.textContent = '開始すると、あなたの立場が表示されます';
 }
 
 function showJudge(ok){
@@ -184,17 +228,20 @@ function showJudge(ok){
 function loadScenario(i){
   current = i;
   const s = scenarios[i];
+
   $.location.textContent = s.location;
   $.progress.textContent = `${i+1} / ${total}`;
   $.title.textContent = 'コンプライアンス研修';
   $.chapter.textContent = s.title;
   $.question.textContent = s.question;
-  $.reading.textContent = '選択後に解説を表示します。まずは「あなたの立場」の人物として、どの対応を選ぶか考えてください。';
-  $.bubble.textContent = `${s.actorLabel}として、最も信頼を守れる対応を選びましょう。`;
+  $.reading.textContent = '選択後に解説を表示します。画面上で大きく表示されている「あなた」の人物として、どの対応を選ぶか考えてください。';
+
+  const youRole = Object.values(s.roles).find(r => r.type === 'you');
+  $.bubble.textContent = `${youRole.label}（${youRole.sub}）として、最も信頼を守れる対応を選びましょう。`;
 
   setSceneBg(s.bg);
   setChars(s.chars);
-  setActor(s.actor, s.actorLabel);
+  setRoles(s.roles);
 
   $.choices.innerHTML = '';
   s.choices.forEach((choice, idx)=>{
@@ -230,13 +277,13 @@ function answer(idx){
   }
 
   setChars(nextChars);
-  setActor(s.actor, s.actorLabel);
+  setRoles(s.roles);
   showJudge(correct);
 
   $.reading.textContent = s.reading;
   $.bubble.textContent = correct
-    ? 'よい判断です。あなたの立場で、周囲へ適切に働きかける行動です。解説で理由も確認しましょう。'
-    : '惜しいです。「あなたの立場」で選ぶべき対応は、緑の選択肢です。理由を確認しましょう。';
+    ? 'よい判断です。大きく表示されている「あなた」の立場から、周囲へ適切に働きかける行動です。'
+    : '惜しいです。大きく表示されている「あなた」の立場で選ぶべき対応は、緑の選択肢です。理由を確認しましょう。';
 
   $.start.style.display = 'inline-block';
   $.start.textContent = current + 1 === total ? '結果を見る' : '次のシナリオへ';
@@ -253,7 +300,7 @@ function showResult(){
 
   setSceneBg('hospital.svg');
   setChars({left:'staff_happy.png', center:'nurse_happy.png', right:'doctor_neutral.png'});
-  clearActor();
+  clearRoles();
 
   $.start.textContent = 'もう一度挑戦する';
   $.start.style.display = 'inline-block';
@@ -280,4 +327,4 @@ $.start.addEventListener('click',()=>{
 
 setChars({left:'staff_happy.png', center:'nurse_neutral.png', right:'doctor_neutral.png'});
 setSceneBg('hospital.svg');
-clearActor();
+clearRoles();
