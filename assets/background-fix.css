@@ -1,0 +1,24 @@
+/* background apply fix v5
+   style.css の後に読み込むことで、既存 main.js を変えずに背景を強制的に写実PNGへ切り替えます。
+*/
+#sceneArea::before{
+  background-image:url('backgrounds/hospital.png') !important;
+  background-size:cover !important;
+  background-position:center bottom !important;
+  background-repeat:no-repeat !important;
+  opacity:.72 !important;
+}
+
+/* 既存 main.js が --scene-bg に hospital/corridor/office を入れる方式でも反応します */
+#sceneArea[style*="hospital"]::before,
+#sceneArea.bg-hospital::before{
+  background-image:url('backgrounds/hospital.png') !important;
+}
+#sceneArea[style*="corridor"]::before,
+#sceneArea.bg-corridor::before{
+  background-image:url('backgrounds/corridor.png') !important;
+}
+#sceneArea[style*="office"]::before,
+#sceneArea.bg-office::before{
+  background-image:url('backgrounds/office.png') !important;
+}
