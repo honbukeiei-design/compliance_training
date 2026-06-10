@@ -55,22 +55,81 @@ button{font:inherit}
   box-shadow:0 8px 20px rgba(0,0,0,.14);
 }
 #characters{
-  position:absolute;inset:42px 22px 84px 22px;z-index:2;
+  position:absolute;
+  inset:70px 22px 92px 22px;
+  z-index:2;
 }
 .character{
-  position:absolute;bottom:0;
-  width:min(31%,260px);
-  max-height:100%;
+  position:absolute;
+  bottom:0;
+  width:min(30%,260px);
+  height:min(94%,760px);
   object-fit:contain;
   object-position:center bottom;
   filter:drop-shadow(0 18px 14px rgba(20,30,40,.16));
   transform-origin:bottom center;
-  transition:opacity .18s ease, transform .18s ease;
+  transition:opacity .18s ease, transform .18s ease, filter .18s ease;
 }
 .character[src=""],.character:not([src]){opacity:0}
 .pos-left{left:3%;transform:translateX(0) scale(.96)}
 .pos-center{left:50%;transform:translateX(-50%) scale(1.08);z-index:3}
 .pos-right{right:3%;transform:translateX(0) scale(.96)}
+.character.is-support{opacity:.86}
+.character.is-actor{
+  opacity:1;
+  filter:
+    drop-shadow(0 18px 14px rgba(20,30,40,.16))
+    drop-shadow(0 0 14px rgba(255,196,72,.9));
+  animation:actor-breathe 1.6s ease-in-out infinite;
+}
+@keyframes actor-breathe{
+  0%,100%{translate:0 0}
+  50%{translate:0 -4px}
+}
+.actorCue{
+  position:absolute;
+  top:-58px;
+  z-index:9;
+  display:none;
+  width:min(31%,270px);
+  padding:.45rem .6rem;
+  border-radius:14px;
+  background:rgba(255,255,255,.97);
+  border:2px solid #f0b83a;
+  box-shadow:0 10px 24px rgba(45,58,70,.18);
+  text-align:center;
+  pointer-events:none;
+}
+.actorCue.show{display:block}
+.actorCue::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-11px;
+  transform:translateX(-50%);
+  width:0;height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-top:11px solid #f0b83a;
+}
+.actorCueMain{
+  display:block;
+  font-weight:900;
+  color:#8a5a00;
+  font-size:.82rem;
+  line-height:1.1;
+}
+.actorCueSub{
+  display:block;
+  margin-top:.15rem;
+  color:#263747;
+  font-weight:800;
+  font-size:.72rem;
+  line-height:1.25;
+}
+.actorCue.pos-left{left:3%;transform:translateX(0)}
+.actorCue.pos-center{left:50%;transform:translateX(-50%)}
+.actorCue.pos-right{right:3%;transform:translateX(0)}
 #messageBubble{
   position:absolute;left:18px;right:18px;bottom:18px;z-index:6;
   display:flex;gap:.7rem;align-items:center;
@@ -135,7 +194,11 @@ h1{margin:.15rem 0 .4rem;font-size:clamp(1.45rem,2.4vw,2.25rem);letter-spacing:.
   #sceneArea{grid-row:1;min-height:46dvh;max-height:48dvh}
   #trainingPanel{grid-column:1;grid-row:2;overflow:visible}
   #readingPanel{grid-column:1;grid-row:3;max-height:none}
-  #characters{inset:34px 14px 72px 14px}.character{width:min(32%,220px)}
+  #characters{inset:58px 14px 76px 14px}
+  .character{width:min(32%,220px);height:min(94%,620px)}
+  .actorCue{top:-50px;width:min(32%,220px);padding:.35rem .45rem}
+  .actorCueMain{font-size:.74rem}
+  .actorCueSub{font-size:.64rem}
 }
 @media (orientation:landscape) and (max-height:560px){
   #app{padding:6px}
@@ -143,103 +206,22 @@ h1{margin:.15rem 0 .4rem;font-size:clamp(1.45rem,2.4vw,2.25rem);letter-spacing:.
   #sceneArea{grid-row:1;min-height:0;max-height:none;border-radius:18px}
   #trainingPanel{grid-column:2;grid-row:1;border-radius:18px;padding:12px;overflow:auto}
   #readingPanel{display:none}
-  h1{font-size:1.35rem;margin:.05rem 0 .25rem}#chapter{font-size:.96rem;margin-bottom:.4rem}#question{font-size:.9rem;line-height:1.55;margin:.15rem 0 .55rem}
-  #choices{gap:.45rem}.choiceBtn{padding:.48rem .7rem;font-size:.86rem;line-height:1.4}
+  h1{font-size:1.35rem;margin:.05rem 0 .25rem}
+  #chapter{font-size:.96rem;margin-bottom:.4rem}
+  #question{font-size:.9rem;line-height:1.55;margin:.15rem 0 .55rem}
+  #choices{gap:.45rem}
+  .choiceBtn{padding:.48rem .7rem;font-size:.86rem;line-height:1.4}
   #startBtn{padding:.55rem .9rem;margin-top:.55rem}
-  #characters{inset:28px 10px 58px 10px}.character{width:30%;max-height:100%}
-  #messageBubble{min-height:42px;padding:.45rem .65rem;font-size:.8rem;bottom:10px;left:10px;right:10px;border-radius:14px}#bubbleIcon{width:24px;height:24px}
-  #locationBadge{top:10px;left:10px;font-size:.78rem}
-}
-@media (min-width:1200px){.character{width:min(30%,290px)}#characters{inset:54px 34px 92px 34px}}
-
-
-/* --- action-cue update: who is "you" in each scenario --- */
-.character{
-  height:min(94%,760px);
-  width:min(30%,260px);
-  object-fit:contain;
-  object-position:center bottom;
-}
-
-.character.is-support{
-  opacity:.92;
-}
-
-.character.is-actor{
-  opacity:1;
-  filter:
-    drop-shadow(0 18px 14px rgba(20,30,40,.16))
-    drop-shadow(0 0 0.75rem rgba(255,196,72,.72));
-  animation:actor-breathe 1.6s ease-in-out infinite;
-}
-
-@keyframes actor-breathe{
-  0%,100%{translate:0 0}
-  50%{translate:0 -4px}
-}
-
-.actorCue{
-  position:absolute;
-  bottom:calc(100% - 36px);
-  z-index:7;
-  display:none;
-  width:min(31%,260px);
-  padding:.45rem .55rem;
-  border-radius:14px;
-  background:rgba(255,255,255,.96);
-  border:2px solid #f0b83a;
-  box-shadow:0 10px 24px rgba(45,58,70,.18);
-  text-align:center;
-  pointer-events:none;
-}
-
-.actorCue.show{
-  display:block;
-}
-
-.actorCue::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  bottom:-11px;
-  transform:translateX(-50%);
-  width:0;height:0;
-  border-left:10px solid transparent;
-  border-right:10px solid transparent;
-  border-top:11px solid #f0b83a;
-}
-
-.actorCueMain{
-  display:block;
-  font-weight:900;
-  color:#8a5a00;
-  font-size:.82rem;
-  line-height:1.1;
-}
-
-.actorCueSub{
-  display:block;
-  margin-top:.15rem;
-  color:#263747;
-  font-weight:800;
-  font-size:.72rem;
-  line-height:1.25;
-}
-
-.actorCue.pos-left{left:3%}
-.actorCue.pos-center{left:50%;transform:translateX(-50%)}
-.actorCue.pos-right{right:3%}
-
-@media (max-width:980px){
-  .character{height:min(94%,620px);width:min(32%,220px)}
-  .actorCue{bottom:calc(100% - 34px);font-size:.78rem;width:min(32%,220px);padding:.35rem .45rem}
-  .actorCueMain{font-size:.74rem}
-  .actorCueSub{font-size:.64rem}
-}
-
-@media (orientation:landscape) and (max-height:560px){
-  .character{height:min(92%,430px);width:30%}
-  .actorCue{bottom:calc(100% - 30px);padding:.25rem .35rem;border-radius:10px}
+  #characters{inset:48px 10px 58px 10px}
+  .character{width:30%;height:min(92%,430px)}
+  .actorCue{top:-42px;padding:.25rem .35rem;border-radius:10px}
   .actorCueMain{font-size:.66rem}
   .actorCueSub{font-size:.58rem}
+  #messageBubble{min-height:42px;padding:.45rem .65rem;font-size:.8rem;bottom:10px;left:10px;right:10px;border-radius:14px}
+  #bubbleIcon{width:24px;height:24px}
+  #locationBadge{top:10px;left:10px;font-size:.78rem}
+}
+@media (min-width:1200px){
+  .character{width:min(30%,290px)}
+  #characters{inset:82px 34px 100px 34px}
 }
