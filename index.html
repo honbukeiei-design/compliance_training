@@ -11,11 +11,26 @@
     <section id="stage" aria-label="研修シナリオ画面">
       <div id="sceneArea">
         <div id="locationBadge">開始前</div>
+
         <div id="characters" aria-hidden="true">
           <img id="charLeft" class="character pos-left" alt="" />
           <img id="charCenter" class="character pos-center" alt="" />
           <img id="charRight" class="character pos-right" alt="" />
+
+          <div id="actorCueLeft" class="actorCue pos-left">
+            <span class="actorCueMain">あなたの立場</span>
+            <span class="actorCueSub"></span>
+          </div>
+          <div id="actorCueCenter" class="actorCue pos-center">
+            <span class="actorCueMain">あなたの立場</span>
+            <span class="actorCueSub"></span>
+          </div>
+          <div id="actorCueRight" class="actorCue pos-right">
+            <span class="actorCueMain">あなたの立場</span>
+            <span class="actorCueSub"></span>
+          </div>
         </div>
+
         <div id="messageBubble" aria-live="polite">
           <img id="bubbleIcon" src="assets/ui/info.svg" alt="" />
           <span>迷ったときほど、患者さん・職員・組織の信頼を守る行動を選びましょう。</span>
@@ -30,7 +45,7 @@
         </div>
         <h1>コンプライアンス研修</h1>
         <div id="chapter">日常業務の判断を確認しましょう</div>
-        <p id="question">開始ボタンを押すと、10本のシナリオが順番に表示されます。各場面で望ましい対応を選び、解説を読みながら理解を深めてください。</p>
+        <p id="question">開始ボタンを押すと、10本のシナリオが順番に表示されます。各場面で「あなたの立場」の人物として望ましい対応を選び、解説を読みながら理解を深めてください。</p>
         <div id="choices"></div>
         <button id="startBtn" type="button">研修を開始する</button>
       </aside>
