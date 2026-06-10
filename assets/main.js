@@ -4,18 +4,20 @@ const B = 'assets/backgrounds/';
 const scenarios = [
   {
     location:'病棟スタッフステーション', bg:'hospital.svg', title:'第1問：SNSへの投稿',
-    question:'休憩中、同僚が「今日の病棟、すごく忙しかった」とSNSに投稿しようとしています。画面には患者さんの氏名は写っていませんが、ナースコール表示や病室番号が一部見えています。あなたならどう対応しますか。',
+    actor:'left', actorLabel:'あなた：病棟看護師',
+    question:'あなたは病棟看護師です。休憩中、同僚が「今日の病棟、すごく忙しかった」とSNSに投稿しようとしています。画面には患者さんの氏名は写っていませんが、ナースコール表示や病室番号が一部見えています。あなたなら、同僚にどう声をかけますか。',
     chars:{left:'nurse_neutral.png', center:'staff_worried.png', right:'security_neutral.png'},
     choices:[
       {text:'氏名が写っていなければ問題ないので、そのまま投稿してもらう。'},
-      {text:'個人が特定される可能性があるため投稿を控えるよう伝え、必要に応じて上司へ相談する。', correct:true, after:{center:'staff_happy.png'}},
+      {text:'個人が特定される可能性があるため投稿を控えるよう伝え、必要に応じて上司へ相談する。', correct:true, after:{left:'nurse_happy.png', center:'staff_happy.png'}},
       {text:'投稿後に問題になったら削除すればよいと伝える。'}],
     reading:'氏名がなくても、病室番号、日時、診療科、写真の背景、会話の内容などが組み合わさると、患者さんや職員が特定されることがあります。医療機関では「外部に出してよい情報か」ではなく、「外部に出したときに誰かの信頼や安全を損なわないか」で判断することが大切です。迷う場合は投稿しない、または上司や担当部署へ確認しましょう。'
   },
   {
     location:'診察室', bg:'hospital.svg', title:'第2問：説明と同意',
-    question:'患者さんが検査内容について不安そうにしています。医師は急いでおり、説明が短くなりそうです。あなたが補助に入っている場合、どの対応が望ましいでしょうか。',
-    chars:{left:'patient_worried.svg', center:'doctor_neutral.png', right:'nurse_worried.png'},
+    actor:'right', actorLabel:'あなた：補助に入る看護師',
+    question:'あなたは診察室で補助に入っている看護師です。患者さんが検査内容について不安そうにしています。医師は急いでおり、説明が短くなりそうです。あなたなら、患者さんの不安にどう対応しますか。',
+    chars:{left:'patient_worried.png', center:'doctor_neutral.png', right:'nurse_worried.png'},
     choices:[
       {text:'患者さんが質問しなければ、理解しているものとして進める。'},
       {text:'不安や疑問を確認し、説明が不足している点は医師に共有して、患者さんが納得できるよう支援する。', correct:true, after:{right:'nurse_happy.png'}},
@@ -24,8 +26,9 @@ const scenarios = [
   },
   {
     location:'廊下', bg:'corridor.svg', title:'第3問：個人情報の会話',
-    question:'廊下で職員同士が患者さんの病状について話しています。周囲には面会者や業者の姿もあります。あなたならどうしますか。',
-    chars:{left:'staff_worried.png', center:'nurse_neutral.png', right:'patient_neutral.svg'},
+    actor:'left', actorLabel:'あなた：通りかかった職員',
+    question:'あなたは廊下を通りかかった職員です。近くで職員同士が患者さんの病状について話しています。周囲には面会者や業者の姿もあります。あなたなら、どのように対応しますか。',
+    chars:{left:'staff_worried.png', center:'nurse_neutral.png', right:'patient_neutral.png'},
     choices:[
       {text:'業務上の会話なので、場所は気にしなくてよい。'},
       {text:'周囲に聞こえる可能性を伝え、スタッフステーションや相談室など適切な場所で話すよう促す。', correct:true, after:{left:'staff_happy.png'}},
@@ -34,17 +37,19 @@ const scenarios = [
   },
   {
     location:'事務室', bg:'office.svg', title:'第4問：USBメモリの使用',
-    question:'急ぎの資料作成のため、患者情報を私物USBメモリに保存して自宅で作業しようと考えています。最も適切な対応はどれでしょうか。',
-    chars:{left:'office_neutral.png', center:'staff_worried.png', right:'security_neutral.png'},
+    actor:'center', actorLabel:'あなた：資料作成を担当する事務職員',
+    question:'あなたは事務室で資料作成を担当している職員です。急ぎの資料作成のため、患者情報を私物USBメモリに保存して自宅で作業しようか迷っています。最も適切な対応はどれでしょうか。',
+    chars:{left:'security_neutral.png', center:'office_neutral.png', right:'manager_stern.png'},
     choices:[
       {text:'短時間だけなら私物USBを使ってもよい。'},
-      {text:'私物媒体への保存は避け、院内ルールに沿った承認済みの方法で作業する。', correct:true, after:{center:'staff_happy.png'}},
+      {text:'私物媒体への保存は避け、院内ルールに沿った承認済みの方法で作業する。', correct:true},
       {text:'ファイル名を分かりにくくすれば、私物USBでも安全である。'}],
     reading:'私物媒体は紛失、盗難、ウイルス感染、誤保存のリスクが高く、情報漏えいにつながりやすいものです。便利さよりも、承認された環境・手順・アクセス権限を優先することが、患者さんと組織を守ります。'
   },
   {
     location:'会議室', bg:'office.svg', title:'第5問：ハラスメントへの気づき',
-    question:'上司が部下に対して、他の職員の前で強い口調の注意を繰り返しています。部下は萎縮しており、業務にも影響が出ています。あなたならどう行動しますか。',
+    actor:'right', actorLabel:'あなた：相談につなぐ立場の職員',
+    question:'あなたは会議室で、上司が部下に対して他の職員の前で強い口調の注意を繰り返している場面を見ました。部下は萎縮しており、業務にも影響が出ています。あなたなら、どのように行動しますか。',
     chars:{left:'manager_angry.png', center:'staff_sad.png', right:'counselor_neutral.png'},
     choices:[
       {text:'指導の一部なので、周囲は口を出さない。'},
@@ -54,8 +59,9 @@ const scenarios = [
   },
   {
     location:'受付・会計窓口', bg:'hospital.svg', title:'第6問：金品・便宜の受け取り',
-    question:'患者さんの家族から「いつもお世話になっているので」と商品券を渡されそうになりました。どう対応するのが適切でしょうか。',
-    chars:{left:'patient_neutral.svg', center:'staff_worried.png', right:'manager_stern.png'},
+    actor:'center', actorLabel:'あなた：受付対応中の職員',
+    question:'あなたは受付・会計窓口で対応している職員です。患者さんの家族から「いつもお世話になっているので」と商品券を渡されそうになりました。どう対応するのが適切でしょうか。',
+    chars:{left:'patient_neutral.png', center:'staff_worried.png', right:'manager_stern.png'},
     choices:[
       {text:'気持ちなので、個人的に受け取ってお礼を言う。'},
       {text:'お気持ちに感謝を伝えつつ、組織のルールとして受け取れないことを丁寧に説明する。', correct:true, after:{center:'staff_happy.png'}},
@@ -64,7 +70,8 @@ const scenarios = [
   },
   {
     location:'電子カルテ端末', bg:'office.svg', title:'第7問：ID・パスワード管理',
-    question:'同僚から「急いでいるので、あなたのIDで電子カルテを開いておいて」と頼まれました。最も望ましい対応はどれですか。',
+    actor:'left', actorLabel:'あなた：依頼を受けた看護師',
+    question:'あなたは電子カルテ端末の前にいる看護師です。同僚から「急いでいるので、あなたのIDで電子カルテを開いておいて」と頼まれました。最も望ましい対応はどれですか。',
     chars:{left:'nurse_worried.png', center:'security_neutral.png', right:'doctor_neutral.png'},
     choices:[
       {text:'信頼できる同僚なら、短時間だけIDを使わせる。'},
@@ -74,7 +81,8 @@ const scenarios = [
   },
   {
     location:'外部業者との打合せ', bg:'office.svg', title:'第8問：契約前の情報提供',
-    question:'システム業者から「概算見積のため、実データを少し見せてほしい」と言われました。患者情報を含む一覧を送ってよいでしょうか。',
+    actor:'left', actorLabel:'あなた：業者対応を担当する事務職員',
+    question:'あなたは外部業者との打合せを担当している事務職員です。システム業者から「概算見積のため、実データを少し見せてほしい」と言われました。患者情報を含む一覧を送ってよいでしょうか。',
     chars:{left:'office_neutral.png', center:'security_neutral.png', right:'manager_stern.png'},
     choices:[
       {text:'見積に必要なら、メールで実データを送付する。'},
@@ -84,7 +92,8 @@ const scenarios = [
   },
   {
     location:'夜間の病棟', bg:'corridor.svg', title:'第9問：ヒヤリ・ハット報告',
-    question:'薬剤の確認でヒヤリとする場面がありました。患者さんへの影響はありませんでしたが、当事者は「大ごとにしたくない」と言っています。あなたならどうしますか。',
+    actor:'left', actorLabel:'あなた：ヒヤリとした看護師',
+    question:'あなたは夜間の病棟で薬剤確認を担当していた看護師です。確認の途中でヒヤリとする場面がありました。患者さんへの影響はありませんでしたが、当事者は「大ごとにしたくない」と言っています。あなたならどうしますか。',
     chars:{left:'nurse_sad.png', center:'doctor_stern.png', right:'manager_stern.png'},
     choices:[
       {text:'患者さんに影響がなければ報告しない。'},
@@ -94,7 +103,8 @@ const scenarios = [
   },
   {
     location:'研修のまとめ', bg:'hospital.svg', title:'第10問：迷ったときの行動',
-    question:'日常業務で「この対応で本当に大丈夫かな」と迷う場面に出会いました。コンプライアンスの観点から、最も望ましい姿勢はどれでしょうか。',
+    actor:'center', actorLabel:'あなた：日常業務で判断する職員',
+    question:'あなたは日常業務の中で「この対応で本当に大丈夫かな」と迷う場面に出会いました。コンプライアンスの観点から、最も望ましい姿勢はどれでしょうか。',
     chars:{left:'staff_worried.png', center:'nurse_neutral.png', right:'counselor_neutral.png'},
     choices:[
       {text:'前例がありそうなら、自分の判断だけで進める。'},
@@ -112,10 +122,42 @@ const $ = {
   stage: el('stage'), scene: el('sceneArea'), location: el('locationBadge'), progress: el('progressText'),
   title: document.querySelector('#trainingPanel h1'), chapter: el('chapter'), question: el('question'), choices: el('choices'),
   start: el('startBtn'), reading: el('readingText'), bubble: el('messageBubble').querySelector('span'), bubbleIcon: el('bubbleIcon'), judge: el('judgement'),
-  left: el('charLeft'), center: el('charCenter'), right: el('charRight')
+  left: el('charLeft'), center: el('charCenter'), right: el('charRight'), characters: el('characters')
 };
 
 function pathFor(img){ return img ? C + img : ''; }
+
+function ensureActorCues(){
+  if($.actorCues) return;
+  $.actorCues = {};
+  ['left','center','right'].forEach(pos=>{
+    const cue = document.createElement('div');
+    cue.className = `actorCue pos-${pos}`;
+    cue.innerHTML = `<span class="actorCueMain">あなたの立場</span><span class="actorCueSub"></span>`;
+    $.characters.appendChild(cue);
+    $.actorCues[pos] = cue;
+  });
+}
+
+function setActor(pos, label){
+  ensureActorCues();
+  ['left','center','right'].forEach(p=>{
+    const img = $[p];
+    img.classList.toggle('is-actor', p === pos);
+    img.classList.toggle('is-support', p !== pos);
+    $.actorCues[p].classList.toggle('show', p === pos);
+    $.actorCues[p].querySelector('.actorCueSub').textContent = p === pos ? label : '';
+  });
+}
+
+function clearActor(){
+  ensureActorCues();
+  ['left','center','right'].forEach(p=>{
+    $[p].classList.remove('is-actor','is-support');
+    $.actorCues[p].classList.remove('show');
+  });
+}
+
 function setChars(chars={}){
   $.left.src = pathFor(chars.left); $.center.src = pathFor(chars.center); $.right.src = pathFor(chars.right);
 }
@@ -125,6 +167,7 @@ function showJudge(ok){
   $.judge.textContent = ok ? '○' : '×';
   window.setTimeout(()=>{$.judge.className='';}, 900);
 }
+
 function loadScenario(i){
   current = i;
   const s = scenarios[i];
@@ -133,10 +176,11 @@ function loadScenario(i){
   $.title.textContent = 'コンプライアンス研修';
   $.chapter.textContent = s.title;
   $.question.textContent = s.question;
-  $.reading.textContent = '選択後に解説を表示します。まずは自分ならどう対応するかを選んでください。';
-  $.bubble.textContent = '場面をよく読み、最も信頼を守れる対応を選びましょう。';
+  $.reading.textContent = '選択後に解説を表示します。まずは「あなたの立場」の人物として、どの対応を選ぶか考えてください。';
+  $.bubble.textContent = `${s.actorLabel}として、最も信頼を守れる対応を選びましょう。`;
   setSceneBg(s.bg);
   setChars(s.chars);
+  setActor(s.actor, s.actorLabel);
   $.choices.innerHTML = '';
   s.choices.forEach((choice, idx)=>{
     const btn = document.createElement('button');
@@ -147,6 +191,7 @@ function loadScenario(i){
   $.start.textContent = '次へ';
   $.start.style.display = 'none';
 }
+
 function answer(idx){
   const s = scenarios[current];
   const choice = s.choices[idx];
@@ -160,14 +205,18 @@ function answer(idx){
   const nextChars = Object.assign({}, s.chars, choice.after || {});
   if(!correct){
     if(nextChars.center && nextChars.center.includes('happy')) nextChars.center = s.chars.center;
+    if(nextChars.left && nextChars.left.includes('happy')) nextChars.left = s.chars.left;
+    if(nextChars.right && nextChars.right.includes('happy')) nextChars.right = s.chars.right;
   }
   setChars(nextChars);
+  setActor(s.actor, s.actorLabel);
   showJudge(correct);
   $.reading.textContent = s.reading;
-  $.bubble.textContent = correct ? 'よい判断です。解説を読んで、判断の理由も確認しましょう。' : '惜しいです。赤い選択肢ではなく、緑の選択肢が望ましい対応です。理由を確認しましょう。';
+  $.bubble.textContent = correct ? 'よい判断です。あなたの立場で、周囲へ適切に働きかける行動です。解説で理由も確認しましょう。' : '惜しいです。「あなたの立場」で選ぶべき対応は、緑の選択肢です。理由を確認しましょう。';
   $.start.style.display = 'inline-block';
   $.start.textContent = current + 1 === total ? '結果を見る' : '次のシナリオへ';
 }
+
 function showResult(){
   $.location.textContent = '修了';
   $.progress.textContent = `${total} / ${total}`;
@@ -178,10 +227,12 @@ function showResult(){
   $.bubble.textContent = `最終結果は ${score} / ${total} です。日常業務でも、迷ったら早めに相談しましょう。`;
   setSceneBg('hospital.svg');
   setChars({left:'staff_happy.png', center:'nurse_happy.png', right:'doctor_neutral.png'});
+  clearActor();
   $.start.textContent = 'もう一度挑戦する';
   $.start.style.display = 'inline-block';
   current = -1;
 }
+
 $.start.addEventListener('click',()=>{
   if(current === -1 && $.start.textContent.includes('もう一度')){score = 0; loadScenario(0); return;}
   if(current === -1){score = 0; loadScenario(0); return;}
@@ -189,3 +240,4 @@ $.start.addEventListener('click',()=>{
 });
 setChars({left:'staff_happy.png', center:'nurse_neutral.png', right:'doctor_neutral.png'});
 setSceneBg('hospital.svg');
+clearActor();
